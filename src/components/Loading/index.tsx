@@ -1,15 +1,43 @@
-import React from 'react';
-import { Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
-import styles from './index.module.less';
+import { Triangle, LineWave } from 'react-loader-spinner';
+import styled from '@emotion/styled';
 
-const Loading = () => {
-  const antIcon = <LoadingOutlined style={{ fontSize: 28 }} spin />;
+const FullWrapper = styled.div`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-1);
+`;
+
+export const PageLoading = () => {
   return (
-    <div className={styles.loadingWrap}>
-      <Spin indicator={antIcon} size="large" tip="加载中..." delay={100} />
-    </div>
+    <FullWrapper>
+      <Triangle
+        height="50"
+        width="50"
+        color="#165dff"
+        ariaLabel="page-loading"
+        visible={true}
+      />
+    </FullWrapper>
   );
 };
 
-export default Loading;
+export const ContentLoading = () => {
+  const wrapperClass = 'items-center flex justify-center';
+  return (
+    <LineWave
+      height="100"
+      width="100"
+      color="#165dff"
+      ariaLabel="line-wave"
+      wrapperStyle={{}}
+      wrapperClass={wrapperClass}
+      visible={true}
+      firstLineColor=""
+      middleLineColor=""
+      lastLineColor=""
+    />
+  );
+};

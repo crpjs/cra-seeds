@@ -1,37 +1,18 @@
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
-import {
   AppstoreOutlined,
   ContainerOutlined,
-  DesktopOutlined,
-  MailOutlined,
   PieChartOutlined,
 } from '@ant-design/icons';
 import { Route, Outlet, Link } from 'react-router-dom';
 import { Layout, Menu, Button } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import type { MenuProps } from 'antd';
+
+import MenuApp from './Menu';
+
 const { Header, Sider, Content } = Layout;
-function About() {
-  return (
-    <>
-      <main>
-        <h2>Who are we?</h2>
-        <p>
-          xxx
-        </p>
-      </main>
-      <nav>
-        <Link to="/">Home</Link>
-      </nav>
-    </>
-  );
-}
 
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(
@@ -41,7 +22,6 @@ function getItem(
   children?: MenuItem[],
   type?: 'group',
 ): MenuItem {
-
   return {
     key,
     icon,
@@ -50,63 +30,59 @@ function getItem(
     type,
   } as MenuItem;
 }
+
+/**
+ * 可变
+ * path 、name、key、icon
+ */
 const items: MenuItem[] = [
-  getItem(<Link to="/app/home">home</Link>, 'home', <ContainerOutlined />),
-  getItem(<Link to="/app/seeds">seeds</Link>, 'seeds', <PieChartOutlined />),
-  getItem(<Link to="/app/about">about</Link>, 'about', <PieChartOutlined />),
+  getItem(<Link to="/home">home</Link>, 'home', <ContainerOutlined />),
+  getItem(<Link to="/leaf">leaf</Link>, 'leaf', <PieChartOutlined />),
+  getItem(<Link to="/about">about</Link>, 'about', <PieChartOutlined />),
 
   getItem('Navigation Two', 'sub2', <AppstoreOutlined />, [
     getItem('Option 9', '9'),
     getItem('Option 10', '10'),
-    getItem('Submenu', 'sub3', null, [getItem('Option 11', '11'), getItem('Option 12', '12')]),
+    getItem('Submenu', 'sub3', null, [
+      getItem('Option 11', '11'),
+      getItem('Option 12', '12'),
+    ]),
   ]),
 ];
 
-const App: React.FC = () => {
+const BaseLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <Layout>
+    <Layout
+      className="site-layout"
+      style={{
+        height: 'calc(100vh - 50px)',
+        overflowY: 'scroll',
+      }}
+    >
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
-            },
-          ]}
-        />
-
-        <Menu
+        <MenuApp />
+        {/* <Menu
           defaultSelectedKeys={['1']}
           defaultOpenKeys={['sub1']}
           mode="inline"
           theme="dark"
           inlineCollapsed={collapsed}
-          items={items}
-        />
+          items={menuItems}
+        /> */}
+        {/* <MenuApp /> */}
       </Sider>
       <Layout className="site-layout">
         <Header className="site-layout-background" style={{ padding: 0 }}>
-          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            className: 'trigger',
-            onClick: () => setCollapsed(!collapsed),
-          })}
+          {React.createElement(
+            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+            {
+              className: 'trigger',
+              onClick: () => setCollapsed(!collapsed),
+            },
+          )}
         </Header>
         <Content
           className="site-layout-background"
@@ -116,12 +92,13 @@ const App: React.FC = () => {
             minHeight: 280,
           }}
         >
-          {/* <Route path="sabout" element={<About />} /> */}
-          <Outlet />
+          <Suspense fallback={null}>
+            <Outlet />
+          </Suspense>
         </Content>
       </Layout>
     </Layout>
   );
 };
 
-export default App;
+export default BaseLayout;
