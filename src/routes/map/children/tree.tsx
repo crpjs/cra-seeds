@@ -4,8 +4,8 @@ import Tree from '@/pages/Tree';
 import { type Route } from '@/routes';
 const Routes: Route[] = [
   {
-    path: 'leaf',
-    element: <Leaf />,
+    path: 'tree',
+    element: <Tree />,
   },
 ];
 

@@ -92,9 +92,9 @@ const BaseLayout: React.FC = () => {
             minHeight: 280,
           }}
         >
-          <Suspense fallback={null}>
-            <Outlet />
-          </Suspense>
+          {/* <Suspense fallback={null}> */}
+          <Outlet />
+          {/* </Suspense> */}
         </Content>
       </Layout>
     </Layout>
